@@ -15,7 +15,7 @@ import re
 import locale
 import codecs
 
-VERSION = 0.13
+VERSION = 0.14
 
 locale.setlocale(locale.LC_ALL,'')
 
@@ -44,13 +44,14 @@ may need to tweak the regexps in this script.
 """
     sys.exit(1)
 
-NAME=u'(?:de la )?(?:De )?[A-Z][\wäöå]+(?: Inc.)?'
+NAME=u'(?:de la )?(?:De )?(?:Ma?c)?[A-ZÅÄÖ][a-zäöå]+(?: Inc.)?'
 
 re_cite = (
            re.compile('((?:%s, ){2,6})and (%s) \(([0-9]{4})\)' % (NAME,NAME)),
            re.compile('(%s) and (%s) \(([0-9]{4})\)' % (NAME,NAME)),
            re.compile('(?:(%s) )+\(([0-9]{4})\)' % NAME),
            re.compile('(%s) (et al\.) \(([0-9]{4})\)' % NAME),
+	   re.compile('(%s)\'s \(([0-9]{4})\)' % NAME),
            
            re.compile('((?:%s, ){2,5})& (%s), ([0-9]{4})' % (NAME,NAME)),
            re.compile('((?:%s, ){2,5})and (%s), ([0-9]{4})' % (NAME,NAME)),
@@ -62,7 +63,7 @@ re_cite = (
 
 re_modeswitch = re.compile('(References|REFERENCES|Bibliography)$')
 
-NAME_F=NAME+u',(?: \w(?:-\w)?\.)+'
+NAME_F=NAME+u',(?: [A-ZÄÖÅ](?:-[A-ZÄÖÅ])?\.)+'
 
 re_references = (
                 re.compile('^((?:%s, ){2,5})& (%s) \(([0-9]{4})\)\. (.*\.)' % (NAME_F,NAME_F)),
